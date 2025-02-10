@@ -1,0 +1,36 @@
+@using XE908.Services.ControllerService
+@using XE908.Models
+@using XE908.Data
+@inject IControllerService ControllerService
+@inject NavigationManager NavigationManager
+@inject DataContext Context
+<tr>
+    @if (Controller != null)
+    {
+        <td><input type="text" @bind="Controller.HostName"/></td>
+        <td><button class="btn btn-primary" @onclick="SubmitAndRedirect"></button></td>
+    }
+    
+</tr>
+@code {
+    [Parameter]
+    public string ControllerId { get; set; }
+    public Controller Controller { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Controller = (await ControllerService.GetControllerByHostNameAsync(ControllerId)).Data!;
+    }
+
+    private async Task SubmitAndRedirect()
+    {
+        try
+        {
+            await Context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+        NavigationManager.NavigateTo("Admin/Controllers", forceLoad: true);
+    }
+}

@@ -1,0 +1,48 @@
+@using XE908.Models
+@using XE908.Services.ControllerService
+@using XE908.Services.RoomService
+@using XE908.Dtos.ConferenceRoomDto
+@inject IRoomService RoomService
+@inject IControllerService ControllerService
+@inject NavigationManager NavigationManager
+<tr>
+    <form>
+    <td><input @bind="NewConferenceRoom.RoomNumber"/></td>
+    <td><input @bind="NewConferenceRoom.RoomDescription"/></td>
+    <td><input @bind="NewConferenceRoom.Capacity"/></td>
+        <td><select @bind="AssignedControllerHostName">
+            @if (AvailableControllers != null)
+            {
+                foreach (var controller in AvailableControllers)
+                            {
+                                <option value="@controller.HostName">@controller.HostName</option>
+                            }
+            }
+        </select></td>
+    <td><button class="btn btn-primary" @onclick="SubmitAndRedirect">Create!</button></td>
+    </form>
+    </tr>
+
+@code {
+    public AddConferenceRoomDto NewConferenceRoom { get; set; }
+    public string AssignedControllerHostName { get; set; }
+    public List<Controller>? AvailableControllers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewConferenceRoom = new AddConferenceRoomDto();
+        AvailableControllers = (await ControllerService.GetAllAvailableControllersAsync()).Data;
+    }
+
+    private async Task SubmitAndRedirect()
+    {
+        if (NewConferenceRoom.RoomNumber != null && NewConferenceRoom.RoomDescription != null && NewConferenceRoom.Capacity != null)
+        {
+            NewConferenceRoom.ControllerId = AssignedControllerHostName;
+            NewConferenceRoom.Controller = (await ControllerService.GetControllerByHostNameAsync(AssignedControllerHostName)).Data!;
+            await RoomService.CreateConferenceRoomAsync(NewConferenceRoom);
+        }
+        NavigationManager.NavigateTo("/Admin", forceLoad: true);
+    }
+
+}

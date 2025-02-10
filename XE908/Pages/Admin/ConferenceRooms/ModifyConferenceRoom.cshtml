@@ -1,0 +1,20 @@
+@page "{conferenceRoomId?}"
+@using XE908.Pages.Components
+@model XE908.Pages.Admin.ConferenceRooms.ModifyConferenceRoomModel
+@{
+    ViewData["Title"] = "ModifyConferenceRoom";
+}
+
+<h1>ModifyConferenceRoom</h1>
+<h2>@Model.ConferenceRoomId</h2>
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>Room Number</th>
+        <th>Room Description</th>
+        <th>Room Capacity</th>
+        <th>Room Controller</th>
+        <th>Action</th>
+    </tr>
+    @(await Html.RenderComponentAsync<AdminConferenceRoomManagementComponent>(RenderMode.Server,
+        new {Model.ConferenceRoomId}))
+</table>

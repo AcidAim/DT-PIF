@@ -1,0 +1,16 @@
+@page
+@model XE908.Pages.Admin.TestModel
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h1>Test</h1>
+<ul>
+@if (Model.Controllers != null)
+{
+    foreach (var controller in Model.Controllers)
+    {
+        <li>@controller.HostName</li>
+    }
+}
+</ul>

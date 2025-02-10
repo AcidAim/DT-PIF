@@ -1,0 +1,29 @@
+@using XE908.Services.ControllerService
+@using XE908.Models
+@inject IControllerService ControllerService
+@inject NavigationManager NavigationManager
+@if (Controllers != null)
+{
+    foreach (var controller in Controllers)
+    {
+        <tr>
+            <td>@controller.HostName</td>
+            <td>
+                <button class="btn btn-primary" @onclick="() => Redirect(controller.HostName)">Modify</button>
+            </td>
+        </tr>
+    }
+}
+@code {
+    private List<Controller> Controllers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Controllers = (await ControllerService.GetAllControllersAsync()).Data!;
+    }
+
+    private void Redirect(string controllerId)
+    {
+        NavigationManager.NavigateTo("/Admin/Controllers/ModifyController?controllerId=" + controllerId, forceLoad: true);
+    }
+}

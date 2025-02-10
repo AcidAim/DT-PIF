@@ -1,0 +1,21 @@
+@page
+@using XE908.Pages.Components
+@model XE908.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Admin Panel";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Administrator Panel</h1>
+
+
+<table class="table table-hover table-bordered">
+        <tr>
+                <th>User Name</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+    @(await Html.RenderComponentAsync<UserComponent>(RenderMode.Server))
+</table>

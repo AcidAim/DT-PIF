@@ -1,0 +1,21 @@
+@page
+@using XE908.Pages.Components
+@model XE908.Pages.Admin.ConferenceRooms.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Manage ConferenceRooms</h1>
+
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>Room Number</th>
+        <th>Room Description</th>
+        <th>Room Capacity</th>
+        <th>Room Controller</th>
+        <th>Action</th>
+    </tr>
+    @(await Html.RenderComponentAsync<AdminConferenceRoomListingComponent>(RenderMode.Server))
+    
+
+</table>

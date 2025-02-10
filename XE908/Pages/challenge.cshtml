@@ -1,0 +1,20 @@
+@page
+@model XE908.Pages.challengeModel
+@{
+    ViewData["Title"] = "challenge";
+}
+
+<h1>challenge</h1>
+<form method="post">
+    <div class="form-floating">
+        <input asp-for="Input.badgeId" class="form-control" autocomplete="" aria-required="true" />
+        <input asp-for="Input.roomId" class="form-control" autocomplete="" aria-required="true"/>
+    </div>
+    <div>
+        <button id="challenge-submit" type="submit" class="w-100 btn btn-lg btn-primary">Check</button>
+    </div>
+</form>
+<div>
+    <h1>@Model.Result</h1>
+</div>
+

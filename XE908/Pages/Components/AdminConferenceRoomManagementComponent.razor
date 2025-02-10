@@ -1,0 +1,50 @@
+@using XE908.Services.RoomService
+@using XE908.Models
+@using XE908.Data
+@using XE908.Services.ControllerService
+@using Microsoft.EntityFrameworkCore
+@inject DataContext _Context
+@inject IRoomService RoomService
+@inject IControllerService ControllerService
+@inject NavigationManager NavigationManager
+@if (ConferenceRoom != null)
+{
+    <tr>
+        <td><input type="text" @bind="ConferenceRoom.RoomNumber"/></td>
+        <td><input type="text" @bind="ConferenceRoom.RoomDescription"/></td>
+        <td><input type="text" @bind="ConferenceRoom.Capacity"/></td>
+        <td><select @bind="ModifiedControllerHostName">
+            <option value="@ConferenceRoom.Controller.HostName" selected="selected"> @ConferenceRoom.Controller.HostName</option>
+            @foreach (var controller in AvailableControllers)
+            {
+                <option value="@controller.HostName">@controller.HostName</option>
+            }
+        </select></td>
+        <td><button class="btn btn-primary" @onclick="SubmitAndRedirect">Modify</button></td>
+    </tr>
+}
+@code {
+    [Parameter]
+    public int ConferenceRoomId { get; set; }
+    private ConferenceRoom? ConferenceRoom { get; set; }
+    private string ModifiedControllerHostName { get; set; }
+    private List<Controller>? AvailableControllers { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ConferenceRoom = (await RoomService.GetConferenceRoomById(ConferenceRoomId)).Data;
+        AvailableControllers = (await ControllerService.GetAllAvailableControllersAsync()).Data;
+        ModifiedControllerHostName = ConferenceRoom.Controller.HostName;
+    }
+    
+    private async Task SubmitAndRedirect()
+    {
+        if (ModifiedControllerHostName != ConferenceRoom.Controller.HostName)
+        {
+            ConferenceRoom.Controller = await _Context.Controllers.
+                FirstAsync(c => c.HostName == ModifiedControllerHostName);
+            ConferenceRoom.ControllerId = ConferenceRoom.Controller.HostName;
+        }
+        await _Context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/Admin/ConferenceRooms/",forceLoad: true);
+    }
+}

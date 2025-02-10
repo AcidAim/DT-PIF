@@ -1,0 +1,20 @@
+@page
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using XE908.Pages.Components
+@model XE908.Pages.Reservation.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>Room</th>
+        <th>Room Description</th>
+        <th>Room Capacity</th>
+        <th>Action</th>
+    </tr>
+    @(await Html.RenderComponentAsync<UserConferenceRoomListingComponent>(RenderMode.Server))
+</table>

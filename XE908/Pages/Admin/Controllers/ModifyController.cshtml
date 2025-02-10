@@ -1,0 +1,17 @@
+@page "{controllerId?}"
+@using XE908.Pages.Components
+@model XE908.Pages.Admin.Controllers.ModifyControllerModel
+@{
+    ViewData["Title"] = "ModifyController";
+}
+
+<h1>@Model.ControllerId</h1>
+
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>HostName</th>
+        <th>Action</th>
+    </tr>
+    @(await Html.RenderComponentAsync<AdminControllerManagmentComponent>(RenderMode.ServerPrerendered, new {Model.ControllerId}))
+</table>
+

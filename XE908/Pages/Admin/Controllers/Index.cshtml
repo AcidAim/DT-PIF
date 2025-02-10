@@ -1,0 +1,15 @@
+@page
+@using XE908.Pages.Components
+@model IndexModel
+@{
+    ViewData["Title"] = "Controllers";
+}
+
+<h1>Controllers</h1>
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>HostName</th>
+        <th>Action</th>
+    </tr>
+    @(await Html.RenderComponentAsync<AdminControllerListingComponent>(RenderMode.Server))
+</table>

@@ -1,0 +1,20 @@
+@page
+@model XE908.Pages.Admin.Controllers.CreateControllerModel
+@{
+    ViewData["Title"] = "CreateController";
+}
+
+<h1>CreateController</h1>
+
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>HostName</th>
+        <th>Action</th>
+    </tr>
+    <tr>
+        <form method="post">
+        <td><input type="text" asp-for="Input.HostName"></td>
+        <td><button type="submit" class="btn btn-primary">Create</button></td>
+        </form>
+    </tr>
+</table>

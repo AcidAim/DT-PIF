@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Mvc
+@using XE908.Areas.Identity.Data
+@using XE908.Services.UserService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
+@if (Users != null)
+{
+    @foreach (var user in Users)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.LastName</td>
+                <td>@user.FirstName</td>
+                <td>@user.Email</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="() => Redirect(user.Id)" value="@user.Id">Modify</button>
+                    <button class="btn btn-danger" @onclick="() => Delete(user.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+}
+
+@code {
+    public List<XE908User>? Users;
+    protected override async Task OnInitializedAsync()
+    {
+        Users = await UserService.GetAllUsersAsync();
+    }
+
+    private void Redirect(string args)
+    {
+        NavigationManager.NavigateTo("/Admin/UserManagement/?clientId=" + args, forceLoad:true);
+    }
+
+    private async Task Delete(string args)
+    {
+        await UserService.DeleteUser(args);
+        await OnInitializedAsync();
+    }
+}

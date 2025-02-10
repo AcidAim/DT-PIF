@@ -1,0 +1,36 @@
+@page
+@using XE908.Pages.Components
+@using NuGet.Protocol
+@model XE908.Pages.Admin.ConferenceRooms.CreateConferenceRoomModel
+@{
+    ViewData["Title"] = "CreateConferenceRoom";
+}
+
+<h1>Hello! Welcome to the ConferenceRoom creation program!</h1>
+
+<table class="table table-hover table-bordered">
+    <tr>
+        <th>RoomNumber</th>
+        <th>Room Description</th>
+        <th>Room Capacity</th>
+        <th>Room Controller</th>
+        <th>Action</th>
+    </tr>
+    <tr>
+        <form method="post">
+        <td><input type="text" asp-for="Input.RoomNumber"/></td>
+        <td><input type="text" asp-for="Input.RoomDescription"></td>
+        <td><input type="text" asp-for="Input.RoomCapacity"></td>
+            <td><select asp-for="Input.RoomControllerHostName">
+                @if (Model.AvailableControllers != null)
+                {
+                    foreach (var controller in Model.AvailableControllers)
+                    {
+                        <option value="@controller.HostName">@controller.HostName</option>
+                    }
+                }
+            </select></td>
+        <td><button type="submit" class="btn btn-primary">Create!</button></td>
+        </form>
+        </tr>
+</table>

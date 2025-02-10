@@ -1,0 +1,29 @@
+@using XE908.Services.RoomService
+@using XE908.Models
+@inject IRoomService RoomService
+@inject NavigationManager NavigationManager
+@if (ConferenceRooms != null)
+{
+    foreach (var conferenceRoom in ConferenceRooms)
+    {
+        <tr>
+            <td>@conferenceRoom.RoomNumber</td>
+            <td>@conferenceRoom.RoomDescription</td>
+            <td>@conferenceRoom.Capacity</td>
+            <td>@conferenceRoom.Controller.HostName</td>
+            <td><button class="btn btn-primary" @onclick="() => Redirect(conferenceRoom.Id.ToString())">Modify</button></td>
+        </tr>
+    }
+}
+@code {
+    private List<ConferenceRoom>? ConferenceRooms { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ConferenceRooms = (await RoomService.GetAllConferenceRoomsAsync()).Data;
+    }
+
+    private void Redirect(string conferenceRoomId)
+    {
+        NavigationManager.NavigateTo("/Admin/ConferenceRooms/ModifyConferenceRoom?conferenceRoomId=" + conferenceRoomId, forceLoad: true);
+    }
+}
